@@ -16,6 +16,7 @@ import java.util.List;
 import com.shinoow.abyssalcraft.api.energy.EnergyEnum.DeityType;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -75,10 +76,8 @@ public abstract class DisruptionEntry {
 	/**
 	 * This is where all the evil things happen
 	 * @param world Current World
-	 * @param x X-Coordinate
-	 * @param y Y-Coordinate
-	 * @param z Z-Coodrinate
+	 * @param pos Current BlockPos
 	 * @param players Nearby Players (16 block range or larger)
 	 */
-	public abstract void disrupt(World world, int x, int y, int z, List<EntityPlayer> players);
+	public abstract void disrupt(World world, BlockPos pos, List<EntityPlayer> players);
 }

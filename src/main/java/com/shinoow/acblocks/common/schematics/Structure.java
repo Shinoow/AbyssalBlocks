@@ -1,6 +1,7 @@
 package com.shinoow.acblocks.common.schematics;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -26,7 +28,7 @@ import java.util.*;
 /* Holds schematic-extended information and can load/spawn/calibrate it */
 /**
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.7.10/blob/master/src/main/java/com/ternsip/placemod/Structure.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Structure.java
  *
  */
 public class Structure {
@@ -115,7 +117,7 @@ public class Structure {
         BitSet skin = BitSet.valueOf(structure.getByteArray("Skin"));
 
         /* Prepare tiles */
-        Random random = new Random();
+        Random random = new Random(seed);
         ArrayList<ChestGenHooks> lootTables = new ArrayList<ChestGenHooks>() {{
             add(ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR));
             add(ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST));
@@ -127,6 +129,9 @@ public class Structure {
         }};
         if (flags.getString("Method").equalsIgnoreCase("Village")) {
             lootTables.add(ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH));
+        }
+        if (flags.getString("Biome").equalsIgnoreCase("Sand")) {
+            lootTables.add(ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST));
         }
 
         /* Paste */
@@ -143,10 +148,9 @@ public class Structure {
             for (int cz = 0; cz < sizeChunkZ; ++cz) {
                 Chunk chunk = world.getChunkFromChunkCoords(cx + startChunkX, cz + startChunkZ);
                 for (int sy = 0; sy < 256; sy += 16) {
-                    Block block = chunk.getBlock(0, sy , 0);
-                    int meta = chunk.getBlockMetadata(0, sy, 0);
-                    chunk.func_150807_a(0, sy, 0, Blocks.log, 0);
-                    chunk.func_150807_a(0, sy, 0, block, meta);
+                    IBlockState state = chunk.getBlockState(new BlockPos(0, sy, 0));
+                    chunk.setBlockState(new BlockPos(0, sy, 0), Blocks.log.getDefaultState());
+                    chunk.setBlockState(new BlockPos(0, sy, 0), state);
                 }
                 ExtendedBlockStorage[] stack = chunk.getBlockStorageArray();
                 System.arraycopy(stack, 0, storage[cx][cz], 0, 16);
@@ -165,22 +169,21 @@ public class Structure {
                     }
                     Block block = Block.getBlockById(blocks[index]);
                     int meta = posture.getWorldMeta(block, blocksMetadata[index]);
+                    IBlockState state = block.getStateFromMeta(meta);
                     int rx = blockPos.getX() - startChunkX * 16;
                     int ry = blockPos.getY();
                     int rz = blockPos.getZ() - startChunkZ * 16;
                     ExtendedBlockStorage store = storage[rx / 16][rz / 16][ry / 16];
                     if (store != null) {
-                        store.func_150818_a(rx % 16, ry % 16, rz % 16, block);
-                        store.setExtBlockMetadata(rx % 16, ry % 16, rz % 16, meta);
+                        store.set(rx % 16, ry % 16, rz % 16, state);
                     } else {
-                        world.setBlock(blockPos.getX(), blockPos.getY(), blockPos.getZ(), block, meta, 0);
+                        world.setBlockState(blockPos, state);
                     }
-                    world.markBlockForUpdate(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                     //world.markBlockRangeForRenderUpdate(blockPos, blockPos);
                     //world.setBlockState(blockPos, state);
                     //chunk.setModified(true);
                     //world.setBlockState(blockPos, state, 2);
-                    TileEntity blockTile = world.getTileEntity(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                    TileEntity blockTile = world.getTileEntity(blockPos);
                     if (blockTile != null && blockTile instanceof TileEntityChest) {
                         ChestGenHooks info = lootTables.get(Math.abs(random.nextInt() % lootTables.size()));
                         WeightedRandomChestContent.generateChestContents(random, info.getItems(random), (TileEntityChest) blockTile, info.getCount(random));
@@ -188,6 +191,7 @@ public class Structure {
                 }
             }
         }
+        world.markBlockRangeForRenderUpdate(posture.getWorldPos(0, 0, 0), posture.getWorldPos(width, height, length));
 
         /* Populate village */
         if (flags.getString("Method").equalsIgnoreCase("Village")) {
@@ -197,7 +201,7 @@ public class Structure {
                 int xPos = posture.getPosX() + Math.abs(random.nextInt()) % posture.getSizeX();
                 int yPos = posture.getPosY() + Math.abs(random.nextInt()) % posture.getSizeY();
                 int zPos = posture.getPosZ() + Math.abs(random.nextInt()) % posture.getSizeZ();
-                if (!world.isAirBlock(xPos, yPos, zPos) || !world.isAirBlock(xPos, yPos + 1, zPos)) {
+                if (!world.isAirBlock(new BlockPos(xPos, yPos, zPos)) || !world.isAirBlock(new BlockPos(xPos, yPos + 1, zPos))) {
                     continue;
                 }
                 EntityVillager villager = new EntityVillager(world, Math.abs(random.nextInt()) % 5);
@@ -222,16 +226,23 @@ public class Structure {
         double squareHeightSumWater = 0;
         boolean[] overlook = Decorator.overlook;
         boolean[] liquid = Decorator.liquid;
-        int ex = posture.getEndX();
-        int ez = posture.getEndZ();
+        int sx = posture.getPosX();
+        int sz = posture.getPosZ();
+        int ex = posture.getEndX() - 1;
+        int ez = posture.getEndZ() - 1;
         String dinName = world.provider.getDimensionName();
         boolean abnormal = dinName.equalsIgnoreCase("Nether") || dinName.equalsIgnoreCase("End");
         int startHeight = abnormal ? 64 : 255;
-        for (int wx = posture.getPosX(); wx < ex; ++wx) {
-            for (int wz = posture.getPosZ(); wz < ez; ++wz) {
+        double area = 0;
+        for (int wx = sx; wx <= ex; ++wx) {
+            for (int wz = sz; wz <= ez; ++wz) {
+                if (wx != sx && wx != ex && wz != sz && wz != ez) {
+                    continue;
+                }
+                area++;
                 int hg = startHeight;
                 while (hg > 0) {
-                    int blockID = Block.getIdFromBlock(world.getBlock(wx, hg, wz));
+                    int blockID = Block.getIdFromBlock(world.getBlockState(new BlockPos(wx, hg, wz)).getBlock());
                     if (blockID >= 0 && blockID < 256 && overlook[blockID]) {
                         --hg;
                     } else {
@@ -241,7 +252,7 @@ public class Structure {
                 totalHeight += hg + 1;
                 squareHeightSum += (hg + 1) * (hg + 1);
                 while (hg > 0) {
-                    int blockID = Block.getIdFromBlock(world.getBlock(wx, hg, wz));
+                    int blockID = Block.getIdFromBlock(world.getBlockState(new BlockPos(wx, hg, wz)).getBlock());
                     if (blockID >= 0 && blockID < 256 && (overlook[blockID] || liquid[blockID])) {
                         --hg;
                     } else {
@@ -252,14 +263,14 @@ public class Structure {
                 squareHeightSumWater += (hg + 1) * (hg + 1);
             }
         }
-        int width = flags.getShort("Width");
         int height = flags.getShort("Height");
-        int length = flags.getShort("Length");
-        double area = width * length;
+        if (area <= 0) {
+            throw new IOException("Incorrect calibration area: " + area);
+        }
+        double variance = area > 1 ? Math.abs((squareHeightSum - (totalHeight * totalHeight) / area) / (area - 1)) : 0;
+        double varianceWater = area > 1 ? Math.abs((squareHeightSumWater - (totalHeightWater * totalHeightWater) / area) / (area - 1)) : 0;
         double averageHeight = totalHeight / area;
-        double variance = Math.abs((squareHeightSum - (totalHeight * totalHeight) / area) / (area - 1));
         double averageHeightWater = totalHeightWater / area;
-        double varianceWater = Math.abs((squareHeightSumWater - (totalHeightWater * totalHeightWater) / area) / (area - 1));
         double waterHeight = averageHeight - averageHeightWater;
         double lift = flags.getInteger("Lift");
         boolean water = flags.getString("Method").equalsIgnoreCase("Water");

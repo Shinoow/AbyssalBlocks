@@ -15,12 +15,11 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.Maps;
-
-import cpw.mods.fml.common.FMLLog;
 
 /**
  * Base data structure for Necronomicon information pages

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.ACPotions;
@@ -39,9 +40,9 @@ public class TriggerPotionEffect extends BlockTrigger {
 	}
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(!world.isRemote){
-			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(16, 16, 16));
+			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(16, 16, 16));
 
 			for(EntityLivingBase entity : entities)
 				if(!isEntityImmune(potion, entity))

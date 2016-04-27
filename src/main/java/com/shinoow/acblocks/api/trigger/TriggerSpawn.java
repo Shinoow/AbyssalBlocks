@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class TriggerSpawn extends BlockTrigger {
@@ -29,22 +30,22 @@ public class TriggerSpawn extends BlockTrigger {
 	}
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(!world.isRemote)
-		for(int i = 0; i < num+1; i++){
-			EntityLivingBase entityliving = null;
-			try {
-				entityliving = entity.getConstructor(World.class).newInstance(world);
-			} catch (InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException
-					| NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
+			for(int i = 0; i < num+1; i++){
+				EntityLivingBase entityliving = null;
+				try {
+					entityliving = entity.getConstructor(World.class).newInstance(world);
+				} catch (InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException
+						| NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				}
+				if(entityliving != null){
+					entityliving.setLocationAndAngles(pos.getX() + randomNum(rand), pos.getY() + 1, pos.getZ() + randomNum(rand), entityliving.rotationYaw, entityliving.rotationPitch);
+					((EntityLiving) entityliving).onInitialSpawn(world.getDifficultyForLocation(pos.up()), (IEntityLivingData)null);
+					world.spawnEntityInWorld(entityliving);
+				}
 			}
-			if(entityliving != null){
-				entityliving.setLocationAndAngles(x + randomNum(rand), y + 1, z + randomNum(rand), entityliving.rotationYaw, entityliving.rotationPitch);
-				((EntityLiving) entityliving).onSpawnWithEgg((IEntityLivingData)null);
-				world.spawnEntityInWorld(entityliving);
-			}
-		}
 	}
 }

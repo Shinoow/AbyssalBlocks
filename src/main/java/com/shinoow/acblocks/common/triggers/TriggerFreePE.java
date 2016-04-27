@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import com.shinoow.abyssalcraft.api.APIUtils;
@@ -13,7 +14,7 @@ import com.shinoow.acblocks.api.trigger.BlockTrigger;
 public class TriggerFreePE extends BlockTrigger {
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(APIUtils.hasNecronomicon(player))
 			if(!world.isRemote)
 				for(ItemStack stack : player.inventory.mainInventory){

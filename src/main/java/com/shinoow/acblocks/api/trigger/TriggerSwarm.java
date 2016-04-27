@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class TriggerSwarm extends BlockTrigger {
@@ -26,14 +27,15 @@ public class TriggerSwarm extends BlockTrigger {
 	}
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(!world.isRemote)
 			for(Class<? extends EntityLivingBase> clazz : entities)
 				for(int i = 0; i < rand.nextInt(3) + 3; i++)
 					try {
 						EntityLivingBase entity = clazz.getConstructor(World.class).newInstance(world);
-						entity.setLocationAndAngles(x + randomNum(rand), y + 1, z + randomNum(rand), entity.rotationYaw, entity.rotationPitch);
-						((EntityLiving) entity).onSpawnWithEgg((IEntityLivingData)null);
+						BlockPos pos1 = new BlockPos(pos.getX() + randomNum(world.rand), pos.getY() + 1, pos.getZ() + randomNum(world.rand));
+						entity.setLocationAndAngles(pos1.getX(), pos1.getY(), pos1.getZ(), entity.rotationYaw, entity.rotationPitch);
+						((EntityLiving) entity).onInitialSpawn(world.getDifficultyForLocation(pos1), (IEntityLivingData)null);
 						world.spawnEntityInWorld(entity);
 					} catch (InstantiationException | IllegalAccessException
 							| IllegalArgumentException

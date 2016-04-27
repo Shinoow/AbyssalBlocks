@@ -3,6 +3,7 @@ package com.shinoow.acblocks.common.triggers;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import com.shinoow.acblocks.common.schematics.Decorator;
@@ -10,8 +11,8 @@ import com.shinoow.acblocks.common.schematics.Decorator;
 public class TriggerRandomSchematic extends TriggerRandomStructure {
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
-		if(Decorator.structures.isEmpty()) super.trigger(world, rand, x, y, z, player);
-			Decorator.place(world, x, y, z, rand.nextLong());
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
+		if(Decorator.structures.isEmpty()) super.trigger(world, rand, pos, player);
+			Decorator.place(world, pos.getX(), pos.getY(), pos.getZ(), rand.nextLong());
 	}
 }

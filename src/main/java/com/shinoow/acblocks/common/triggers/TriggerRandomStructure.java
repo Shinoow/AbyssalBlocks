@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -32,14 +33,14 @@ public class TriggerRandomStructure extends BlockTrigger {
 	}
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(!world.isRemote){
 			if(spawnBlock != null){
-				world.setBlock(x, y, z, spawnBlock);
+				world.setBlockState(pos, spawnBlock.getDefaultState());
 			}
 			if(!isSingle)
-				structures[rand.nextInt(structures.length)].generate(world, rand, x, y, z);
-			else structures[0].generate(world, rand, x, y, z);
+				structures[rand.nextInt(structures.length)].generate(world, rand, pos);
+			else structures[0].generate(world, rand, pos);
 		}
 	}
 }

@@ -1,26 +1,22 @@
 package com.shinoow.acblocks.common.schematics;
 
 
-import cpw.mods.fml.common.IWorldGenerator;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+import java.util.Stack;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.IChunkProvider;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.*;
 
 import com.google.common.collect.Lists;
 
 /* This class statically loads blueprints and mod configuration and override generate method @author Ternsip */
 /**
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.7.10/blob/master/src/main/java/com/ternsip/placemod/Decorator.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Decorator.java
  *
  */
 public class Decorator {

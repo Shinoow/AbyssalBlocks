@@ -3,12 +3,13 @@ package com.shinoow.acblocks.world;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.shinoow.acblocks.AbyssalBlocks;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AbyssalBlockWorldGenerator {
 
@@ -23,14 +24,16 @@ public class AbyssalBlockWorldGenerator {
 		if(random.nextInt(AbyssalBlocks.abyssalBlockSpawnrate) == 0){
 			int xPos = x + random.nextInt(16);
 			int zPos = z + random.nextInt(16);
-			int yPos = world.getTopSolidOrLiquidBlock(xPos, zPos);
+			int yPos = world.getTopSolidOrLiquidBlock(new BlockPos(xPos, 0, zPos)).getY();
 
-			if(world.getBlock(xPos, yPos - 1, zPos).equals(Blocks.bedrock))
+			BlockPos pos = new BlockPos(xPos, yPos - 1, zPos);
+			
+			if(world.getBlockState(pos).getBlock().equals(Blocks.bedrock))
 			{
 				for(int y = 0; y < yPos; y++)
 				{
-
-					if(world.getBlock(xPos, y - 1, zPos).isBlockSolid(world, xPos, y, zPos, 1) && world.isAirBlock(xPos, y, zPos))
+					BlockPos pos1 = new BlockPos(xPos, y, zPos);
+					if(world.getBlockState(pos1).getBlock().isBlockSolid(world, pos1, EnumFacing.UP) && world.isAirBlock(pos1))
 					{
 						yPos = y;
 						return;
@@ -38,7 +41,7 @@ public class AbyssalBlockWorldGenerator {
 				}
 			}
 
-			world.setBlock(xPos, yPos, zPos, AbyssalBlocks.abyssalBlock);
+			world.setBlockState(new BlockPos(xPos, yPos, zPos), AbyssalBlocks.abyssalBlock.getDefaultState());
 		}
 	}
 }

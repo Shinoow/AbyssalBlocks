@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
@@ -21,9 +22,9 @@ public class TriggerRandomChestLoot extends BlockTrigger {
 	}
 
 	@Override
-	public void trigger(World world, Random rand, int x, int y, int z, EntityPlayer player) {
+	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		ItemStack loot = ChestGenHooks.getOneItem(lootTable, rand);
-		EntityItem item = new EntityItem(world, x, y, z, loot);
+		EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), loot);
 		if(!world.isRemote)
 			world.spawnEntityInWorld(item);
 	}

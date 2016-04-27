@@ -8,16 +8,15 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 
 import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 
 
 public class AbyssalBlocksAPI {
@@ -65,11 +64,11 @@ public class AbyssalBlocksAPI {
 	 * @param y Y-Coordinate
 	 * @param z Z-Coordinate
 	 */
-	public static void generateBlockTrigger(World world, int x, int y, int z, EntityPlayer player) {
+	public static void generateBlockTrigger(World world, BlockPos pos, EntityPlayer player) {
 		rand.setSeed((long) (((world.rand.nextLong() * (world.rand.nextInt(15)+1))/(10* world.rand.nextInt(3)+1) * Calendar.getInstance(TimeZone.getTimeZone(TimeZone.getAvailableIDs()[world.rand.nextInt(TimeZone.getAvailableIDs().length)])).getTimeInMillis())/Math.PI));
 		int num = getNum(rand.nextInt(100));
 
-		triggerRegistry.get(num).get(rand.nextInt(triggerRegistry.get(num).size())).trigger(world, rand, x, y, z, player);
+		triggerRegistry.get(num).get(rand.nextInt(triggerRegistry.get(num).size())).trigger(world, rand, pos, player);
 	}
 
 	private static int getNum(int dice){

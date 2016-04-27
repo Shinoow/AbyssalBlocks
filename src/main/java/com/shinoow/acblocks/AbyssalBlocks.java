@@ -6,17 +6,56 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.Mod.Metadata;
+import net.minecraftforge.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.logging.log4j.Level;
 
 import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.ACPotions;
 import com.shinoow.abyssalcraft.api.block.ACBlocks;
-import com.shinoow.abyssalcraft.common.entity.*;
-import com.shinoow.abyssalcraft.common.entity.anti.*;
+import com.shinoow.abyssalcraft.common.entity.EntityAbyssalZombie;
+import com.shinoow.abyssalcraft.common.entity.EntityChagarothFist;
+import com.shinoow.abyssalcraft.common.entity.EntityChagarothSpawn;
+import com.shinoow.abyssalcraft.common.entity.EntityDepthsGhoul;
+import com.shinoow.abyssalcraft.common.entity.EntityDragonMinion;
+import com.shinoow.abyssalcraft.common.entity.EntityDreadSpawn;
+import com.shinoow.abyssalcraft.common.entity.EntityDreadguard;
+import com.shinoow.abyssalcraft.common.entity.EntityDreadling;
+import com.shinoow.abyssalcraft.common.entity.EntityGatekeeperMinion;
+import com.shinoow.abyssalcraft.common.entity.EntityGreaterDreadSpawn;
+import com.shinoow.abyssalcraft.common.entity.EntityLesserDreadbeast;
+import com.shinoow.abyssalcraft.common.entity.EntityLesserShoggoth;
+import com.shinoow.abyssalcraft.common.entity.EntityOmotholGhoul;
+import com.shinoow.abyssalcraft.common.entity.EntityRemnant;
+import com.shinoow.abyssalcraft.common.entity.EntityShadowBeast;
+import com.shinoow.abyssalcraft.common.entity.EntityShadowCreature;
+import com.shinoow.abyssalcraft.common.entity.EntityShadowMonster;
+import com.shinoow.abyssalcraft.common.entity.EntitySkeletonGoliath;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiAbyssalZombie;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiCreeper;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiGhoul;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiPlayer;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiSkeleton;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiSpider;
+import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiZombie;
 import com.shinoow.abyssalcraft.common.structures.StructureShoggothPit;
 import com.shinoow.abyssalcraft.common.structures.abyss.stronghold.StructureAbyStrongholdPieces;
 import com.shinoow.abyssalcraft.common.structures.dreadlands.mineshaft.StructureDreadlandsMinePieces;
@@ -35,23 +74,21 @@ import com.shinoow.acblocks.common.blocks.BlockAbyssalBlock;
 import com.shinoow.acblocks.common.schematics.Decorator;
 import com.shinoow.acblocks.common.structures.AbyPillar;
 import com.shinoow.acblocks.common.structures.AbyRuin;
-import com.shinoow.acblocks.common.triggers.*;
+import com.shinoow.acblocks.common.triggers.TriggerAntimatterExplosion;
+import com.shinoow.acblocks.common.triggers.TriggerDarkRealmBanish;
+import com.shinoow.acblocks.common.triggers.TriggerDemonAnimals;
+import com.shinoow.acblocks.common.triggers.TriggerDisruption;
+import com.shinoow.acblocks.common.triggers.TriggerFreePE;
+import com.shinoow.acblocks.common.triggers.TriggerFreeRitualAltar;
+import com.shinoow.acblocks.common.triggers.TriggerMonolithicCalamity;
+import com.shinoow.acblocks.common.triggers.TriggerPotionEffect;
+import com.shinoow.acblocks.common.triggers.TriggerRandomCrystals;
+import com.shinoow.acblocks.common.triggers.TriggerRandomSchematic;
+import com.shinoow.acblocks.common.triggers.TriggerRandomStructure;
+import com.shinoow.acblocks.common.triggers.TriggerShoggothInfestation;
 import com.shinoow.acblocks.world.AbyssalBlockWorldGenerator;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.Metadata;
-import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.1,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.1,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.8.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
@@ -94,6 +131,9 @@ public class AbyssalBlocks {
 
 	@EventHandler
 	public void Init(FMLInitializationEvent event){
+
+		if(FMLCommonHandler.instance().getSide().isClient())
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(abyssalBlock), 0, new ModelResourceLocation("acblocks:abyssalblock", "inventory"));
 
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerDisruption(), 5);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerDisruption(), 4);

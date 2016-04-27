@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * This class transforms block metadata (rotate n times and flip)<br>
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.7.10/blob/master/src/main/java/com/ternsip/placemod/Directions.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Directions.java
  * @author Ternsip (ternsip@gmail.com)
  * 
  */

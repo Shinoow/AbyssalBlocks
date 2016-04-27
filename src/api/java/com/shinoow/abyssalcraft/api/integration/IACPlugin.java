@@ -51,7 +51,7 @@ public interface IACPlugin {
 	public void init();
 
 	/**
-	 * Will be called at the post-init stage
+	 * Will be called at the end of the post-init stage
 	 */
 	public void postInit();
 }
