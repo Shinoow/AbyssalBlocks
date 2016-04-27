@@ -9,14 +9,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +30,7 @@ import java.util.*;
 /* Holds schematic-extended information and can load/spawn/calibrate it */
 /**
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Structure.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.9/blob/master/src/main/java/com/ternsip/placemod/Structure.java
  *
  */
 public class Structure {
@@ -118,20 +120,17 @@ public class Structure {
 
         /* Prepare tiles */
         Random random = new Random(seed);
-        ArrayList<ChestGenHooks> lootTables = new ArrayList<ChestGenHooks>() {{
-            add(ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR));
-            add(ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST));
-            add(ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST));
-            add(ChestGenHooks.getInfo(ChestGenHooks.BONUS_CHEST));
-            add(ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_CORRIDOR));
-            add(ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY));
-            add(ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_DISPENSER));
+        ArrayList<ResourceLocation> lootTables = new ArrayList<ResourceLocation>() {{
+            add(LootTableList.CHESTS_ABANDONED_MINESHAFT);
+            add(LootTableList.CHESTS_JUNGLE_TEMPLE);
+            add(LootTableList.CHESTS_SIMPLE_DUNGEON);
+            add(LootTableList.CHESTS_SPAWN_BONUS_CHEST);
+            add(LootTableList.CHESTS_STRONGHOLD_CORRIDOR);
+            add(LootTableList.CHESTS_STRONGHOLD_CROSSING);
+            add(LootTableList.CHESTS_STRONGHOLD_LIBRARY);
         }};
         if (flags.getString("Method").equalsIgnoreCase("Village")) {
-            lootTables.add(ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH));
-        }
-        if (flags.getString("Biome").equalsIgnoreCase("Sand")) {
-            lootTables.add(ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST));
+            lootTables.add(LootTableList.CHESTS_VILLAGE_BLACKSMITH);
         }
 
         /* Paste */
@@ -185,8 +184,9 @@ public class Structure {
                     //world.setBlockState(blockPos, state, 2);
                     TileEntity blockTile = world.getTileEntity(blockPos);
                     if (blockTile != null && blockTile instanceof TileEntityChest) {
-                        ChestGenHooks info = lootTables.get(Math.abs(random.nextInt() % lootTables.size()));
-                        WeightedRandomChestContent.generateChestContents(random, info.getItems(random), (TileEntityChest) blockTile, info.getCount(random));
+                        TileEntityChest chest = (TileEntityChest) blockTile;
+                        int id = Math.abs(random.nextInt() % lootTables.size());
+                        chest.setLoot(lootTables.get(id), random.nextLong());
                     }
                 }
             }
@@ -230,7 +230,7 @@ public class Structure {
         int sz = posture.getPosZ();
         int ex = posture.getEndX() - 1;
         int ez = posture.getEndZ() - 1;
-        String dinName = world.provider.getDimensionName();
+        String dinName = world.provider.getDimensionType().getName();
         boolean abnormal = dinName.equalsIgnoreCase("Nether") || dinName.equalsIgnoreCase("End");
         int startHeight = abnormal ? 64 : 255;
         double area = 0;

@@ -16,14 +16,14 @@ import com.google.common.collect.Lists;
 /* This class statically loads blueprints and mod configuration and override generate method @author Ternsip */
 /**
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Decorator.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.9/blob/master/src/main/java/com/ternsip/placemod/Decorator.java
  *
  */
 public class Decorator {
 
-    static boolean[] soil = new boolean[256];
-    static boolean[] overlook = new boolean[256];
-    static boolean[] liquid = new boolean[256];
+	static boolean[] soil = new boolean[256];
+	static boolean[] overlook = new boolean[256];
+	static boolean[] liquid = new boolean[256];
 	public static List<Structure> structures = Lists.newArrayList();
 
 	private static void loadStructures(File folder) {
@@ -73,56 +73,56 @@ public class Decorator {
 		maxZ = Math.max(maxZ, posture.getSizeZ());
 		posture.shift(sx, y, sz);
 		try {
-//			posture.shift(0, structure.calibrate(world, posture, seed), 0);
 			structure.paste(world, posture, random.nextLong());
+
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+
 		}
 	}
 
 	public static void init() {
 
 		soil[Block.getIdFromBlock(Blocks.grass)] = true;
-        soil[Block.getIdFromBlock(Blocks.dirt)] = true;
-        soil[Block.getIdFromBlock(Blocks.stone)] = true;
-        soil[Block.getIdFromBlock(Blocks.cobblestone)] = true;
-        soil[Block.getIdFromBlock(Blocks.sandstone)] = true;
-        soil[Block.getIdFromBlock(Blocks.netherrack)] = true;
-        soil[Block.getIdFromBlock(Blocks.gravel)] = true;
-        soil[Block.getIdFromBlock(Blocks.sand)] = true;
+		soil[Block.getIdFromBlock(Blocks.dirt)] = true;
+		soil[Block.getIdFromBlock(Blocks.stone)] = true;
+		soil[Block.getIdFromBlock(Blocks.cobblestone)] = true;
+		soil[Block.getIdFromBlock(Blocks.sandstone)] = true;
+		soil[Block.getIdFromBlock(Blocks.netherrack)] = true;
+		soil[Block.getIdFromBlock(Blocks.gravel)] = true;
+		soil[Block.getIdFromBlock(Blocks.sand)] = true;
 
-        overlook[Block.getIdFromBlock(Blocks.air)] = true;
-        overlook[Block.getIdFromBlock(Blocks.log)] = true;
-        overlook[Block.getIdFromBlock(Blocks.log2)] = true;
-        overlook[Block.getIdFromBlock(Blocks.leaves)] = true;
-        overlook[Block.getIdFromBlock(Blocks.leaves2)] = true;
-        overlook[Block.getIdFromBlock(Blocks.sapling)] = true;
-        overlook[Block.getIdFromBlock(Blocks.web)] = true;
-        overlook[Block.getIdFromBlock(Blocks.tallgrass)] = true;
-        overlook[Block.getIdFromBlock(Blocks.deadbush)] = true;
-        overlook[Block.getIdFromBlock(Blocks.yellow_flower)] = true;
-        overlook[Block.getIdFromBlock(Blocks.red_flower)] = true;
-        overlook[Block.getIdFromBlock(Blocks.red_mushroom_block)] = true;
-        overlook[Block.getIdFromBlock(Blocks.brown_mushroom_block)] = true;
-        overlook[Block.getIdFromBlock(Blocks.brown_mushroom)] = true;
-        overlook[Block.getIdFromBlock(Blocks.fire)] = true;
-        overlook[Block.getIdFromBlock(Blocks.wheat)] = true;
-        overlook[Block.getIdFromBlock(Blocks.snow_layer)] = true;
-        overlook[Block.getIdFromBlock(Blocks.snow)] = true;
-        overlook[Block.getIdFromBlock(Blocks.cactus)] = true;
-        overlook[Block.getIdFromBlock(Blocks.pumpkin)] = true;
-        overlook[Block.getIdFromBlock(Blocks.vine)] = true;
-        overlook[Block.getIdFromBlock(Blocks.waterlily)] = true;
-        overlook[Block.getIdFromBlock(Blocks.double_plant)] = true;
+		overlook[Block.getIdFromBlock(Blocks.air)] = true;
+		overlook[Block.getIdFromBlock(Blocks.log)] = true;
+		overlook[Block.getIdFromBlock(Blocks.log2)] = true;
+		overlook[Block.getIdFromBlock(Blocks.leaves)] = true;
+		overlook[Block.getIdFromBlock(Blocks.leaves2)] = true;
+		overlook[Block.getIdFromBlock(Blocks.sapling)] = true;
+		overlook[Block.getIdFromBlock(Blocks.web)] = true;
+		overlook[Block.getIdFromBlock(Blocks.tallgrass)] = true;
+		overlook[Block.getIdFromBlock(Blocks.deadbush)] = true;
+		overlook[Block.getIdFromBlock(Blocks.yellow_flower)] = true;
+		overlook[Block.getIdFromBlock(Blocks.red_flower)] = true;
+		overlook[Block.getIdFromBlock(Blocks.red_mushroom_block)] = true;
+		overlook[Block.getIdFromBlock(Blocks.brown_mushroom_block)] = true;
+		overlook[Block.getIdFromBlock(Blocks.brown_mushroom)] = true;
+		overlook[Block.getIdFromBlock(Blocks.fire)] = true;
+		overlook[Block.getIdFromBlock(Blocks.wheat)] = true;
+		overlook[Block.getIdFromBlock(Blocks.snow_layer)] = true;
+		overlook[Block.getIdFromBlock(Blocks.snow)] = true;
+		overlook[Block.getIdFromBlock(Blocks.cactus)] = true;
+		overlook[Block.getIdFromBlock(Blocks.pumpkin)] = true;
+		overlook[Block.getIdFromBlock(Blocks.vine)] = true;
+		overlook[Block.getIdFromBlock(Blocks.waterlily)] = true;
+		overlook[Block.getIdFromBlock(Blocks.double_plant)] = true;
 
-        liquid[Block.getIdFromBlock(Blocks.water)] = true;
-        liquid[Block.getIdFromBlock(Blocks.flowing_water)] = true;
-        liquid[Block.getIdFromBlock(Blocks.ice)] = true;
-        liquid[Block.getIdFromBlock(Blocks.lava)] = true;
-        liquid[Block.getIdFromBlock(Blocks.flowing_lava)] = true;
-		
-        File folder = new File("config/acblocks/schematics/");
-        folder.mkdirs();
+		liquid[Block.getIdFromBlock(Blocks.water)] = true;
+		liquid[Block.getIdFromBlock(Blocks.flowing_water)] = true;
+		liquid[Block.getIdFromBlock(Blocks.ice)] = true;
+		liquid[Block.getIdFromBlock(Blocks.lava)] = true;
+		liquid[Block.getIdFromBlock(Blocks.flowing_lava)] = true;
+
+		File folder = new File("config/acblocks/schematics/");
+		folder.mkdirs();
 		loadStructures(folder);
 
 	}

@@ -6,11 +6,10 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
 
 public class TriggerRandomLootPoolLoot extends BlockTrigger {
 
@@ -35,7 +34,34 @@ public class TriggerRandomLootPoolLoot extends BlockTrigger {
 	public ItemStack getRandomItem(Random rand, List<WeightedRandomChestContent> items)
     {
         WeightedRandomChestContent item = (WeightedRandomChestContent)WeightedRandom.getRandomItem(rand, items);
-        ItemStack[] stacks = ChestGenHooks.generateStacks(rand, item.theItemId, item.minStackSize, item.maxStackSize);
+        ItemStack[] stacks = generateStacks(rand, item.theItemId, item.minStackSize, item.maxStackSize);
         return (stacks.length > 0 ? stacks[0] : null);
+    }
+	
+	public static ItemStack[] generateStacks(Random rand, ItemStack source, int min, int max)
+    {
+        int count = min + (rand.nextInt(max - min + 1));
+
+        ItemStack[] ret;
+        if (source.getItem() == null)
+        {
+            ret = new ItemStack[0];
+        }
+        else if (count > source.getMaxStackSize())
+        {
+            ret = new ItemStack[count];
+            for (int x = 0; x < count; x++)
+            {
+                ret[x] = source.copy();
+                ret[x].stackSize = 1;
+            }
+        }
+        else
+        {
+            ret = new ItemStack[1];
+            ret[0] = source.copy();
+            ret[0].stackSize = count;
+        }
+        return ret;
     }
 }

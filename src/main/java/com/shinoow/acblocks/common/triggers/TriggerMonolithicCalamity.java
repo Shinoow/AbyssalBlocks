@@ -2,11 +2,11 @@ package com.shinoow.acblocks.common.triggers;
 
 import java.util.Random;
 
-import com.shinoow.abyssalcraft.common.util.SpecialTextUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.shinoow.abyssalcraft.common.util.SpecialTextUtil;
 
 public class TriggerMonolithicCalamity extends TriggerShoggothInfestation {
 

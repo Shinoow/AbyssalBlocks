@@ -11,22 +11,22 @@
  ******************************************************************************/
 package com.shinoow.abyssalcraft.api;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -63,22 +63,12 @@ public class AbyssalCraftAPI {
 	 */
 	public static final String API_VERSION = "1.6.5";
 
-	/**
-	 * Enchantment IDs, first one is the Coralium enchantment, second Dread enchantment,
-	 * third the Light Pierce enchantment, and the fourth is the Iron Wall enchantment.
-	 */
-	public static int enchId1, enchId2, enchId3, enchId4;
+	public static Enchantment coralium_enchantment, dread_enchantment, light_pierce, iron_wall;
 
-	/**
-	 * Potion IDs, first one is the Coralium Plague, second Dread Plague, and third Antimatter
-	 */
-	public static int potionId1, potionId2, potionId3;
+	public static Potion coralium_plague, dread_plague, antimatter_potion;
 
 	private static List<IFuelHandler> crystallizerFuelHandlers = Lists.newArrayList();
 	private static List<IFuelHandler> transmutatorFuelHandlers = Lists.newArrayList();
-
-	private static HashMap<Integer, String> potionRequirements = null;
-	private static HashMap<Integer, String> potionAmplifiers = null;
 
 	public static DamageSource coralium = new DamageSource("coralium").setDamageBypassesArmor().setMagicDamage();
 	public static DamageSource dread = new DamageSource("dread").setDamageBypassesArmor().setMagicDamage();
@@ -99,14 +89,14 @@ public class AbyssalCraftAPI {
 	 */
 	public static EnumCreatureAttribute SHADOW = EnumHelper.addCreatureAttribute("SHADOW");
 
-	public static ArmorMaterial abyssalniteArmor = EnumHelper.addArmorMaterial("Abyssalnite", "abyssalcraft:abyssalnite", 35, new int[]{3, 6, 8, 3}, 13);
-	public static ArmorMaterial dreadedAbyssalniteArmor = EnumHelper.addArmorMaterial("Dread", "abyssalcraft:dread", 36, new int[]{3, 6, 8, 3}, 15);
-	public static ArmorMaterial refinedCoraliumArmor = EnumHelper.addArmorMaterial("Coralium", "abyssalcraft:coralium", 37, new int[]{3, 6, 8, 3}, 14);
-	public static ArmorMaterial platedCoraliumArmor = EnumHelper.addArmorMaterial("CoraliumP", "abyssalcraft:coraliump", 55, new int[]{4, 7, 9, 4}, 14);
-	public static ArmorMaterial depthsArmor = EnumHelper.addArmorMaterial("Depths", "abyssalcraft:depths", 33, new int[]{3, 6, 8, 3}, 25);
-	public static ArmorMaterial dreadiumArmor = EnumHelper.addArmorMaterial("Dreadium", "abyssalcraft:dreadium", 40, new int[]{3, 6, 8, 3}, 15);
-	public static ArmorMaterial dreadiumSamuraiArmor = EnumHelper.addArmorMaterial("DreadiumS", "abyssalcraft:dreadiums", 45, new int[]{3, 6, 8, 3}, 20);
-	public static ArmorMaterial ethaxiumArmor = EnumHelper.addArmorMaterial("Ethaxium", "abyssalcraft:ethaxium", 50, new int[]{3, 6, 8, 3}, 25);
+	public static ArmorMaterial abyssalniteArmor = EnumHelper.addArmorMaterial("Abyssalnite", "abyssalcraft:abyssalnite", 35, new int[]{3, 6, 8, 3}, 13, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial dreadedAbyssalniteArmor = EnumHelper.addArmorMaterial("Dread", "abyssalcraft:dread", 36, new int[]{3, 6, 8, 3}, 15, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial refinedCoraliumArmor = EnumHelper.addArmorMaterial("Coralium", "abyssalcraft:coralium", 37, new int[]{3, 6, 8, 3}, 14, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial platedCoraliumArmor = EnumHelper.addArmorMaterial("CoraliumP", "abyssalcraft:coraliump", 55, new int[]{4, 7, 9, 4}, 14, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial depthsArmor = EnumHelper.addArmorMaterial("Depths", "abyssalcraft:depths", 33, new int[]{3, 6, 8, 3}, 25, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial dreadiumArmor = EnumHelper.addArmorMaterial("Dreadium", "abyssalcraft:dreadium", 40, new int[]{3, 6, 8, 3}, 15, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial dreadiumSamuraiArmor = EnumHelper.addArmorMaterial("DreadiumS", "abyssalcraft:dreadiums", 45, new int[]{3, 6, 8, 3}, 20, SoundEvents.item_armor_equip_iron);
+	public static ArmorMaterial ethaxiumArmor = EnumHelper.addArmorMaterial("Ethaxium", "abyssalcraft:ethaxium", 50, new int[]{3, 6, 8, 3}, 25, SoundEvents.item_armor_equip_iron);
 
 	public static ToolMaterial darkstoneTool = EnumHelper.addToolMaterial("DARKSTONE", 1, 180, 5.0F, 1, 5);
 	public static ToolMaterial abyssalniteTool = EnumHelper.addToolMaterial("ABYSSALNITE", 4, 1261, 10.0F, 4, 12);
@@ -137,39 +127,6 @@ public class AbyssalCraftAPI {
 	}
 
 	/**
-	 * Initializes the reflection required for the Potion code, ignore it
-	 */
-	@SuppressWarnings("unchecked")
-	public static void initPotionReflection(){
-		for(Field f : PotionHelper.class.getDeclaredFields())
-			try {
-				if(f.getName().equals("potionRequirements") || f.getName().equals("field_179539_o")){
-					f.setAccessible(true);
-					try {
-						potionRequirements = (HashMap<Integer, String>)f.get(null);
-					} catch (IllegalArgumentException
-							| IllegalAccessException e) {
-						System.err.println("Whoops, something screwed up here, please report this to shinoow:");
-						e.printStackTrace();
-					}
-				}
-				if(f.getName().equals("potionAmplifiers") || f.getName().equals("field_179540_p")){
-					f.setAccessible(true);
-					try {
-						potionAmplifiers = (HashMap<Integer, String>)f.get(null);
-					} catch (IllegalArgumentException
-							| IllegalAccessException e) {
-						System.err.println("Whoops, something screwed up here, please report this to shinoow:");
-						e.printStackTrace();
-					}
-				}
-			} catch (SecurityException e) {
-				System.err.println("Whoops, something screwed up here, please report this to shinoow:");
-				e.printStackTrace();
-			}
-	}
-
-	/**
 	 * Sets the repair items for each armor/tool material
 	 */
 	public static void setRepairItems(){
@@ -188,30 +145,6 @@ public class AbyssalCraftAPI {
 		refinedCoraliumTool.setRepairItem(new ItemStack(ACItems.refined_coralium_ingot));
 		dreadiumTool.setRepairItem(new ItemStack(ACItems.dreadium_ingot));
 		ethaxiumTool.setRepairItem(new ItemStack(ACItems.ethaxium_ingot));
-	}
-
-	/**
-	 * Adds a bit sequence used to calculate the status on a potion.
-	 * This description probably hardly makes any sense, deal with it.
-	 * @param id The potion id
-	 * @param requirements A bit sequence
-	 * 
-	 * @since 1.1
-	 */
-	public static void addPotionRequirements(int id, String requirements){
-		potionRequirements.put(Integer.valueOf(id), requirements);
-	}
-
-	/**
-	 * Adds an amplifier to a potion.
-	 * This description probably hardly makes any sense, deal with it.
-	 * @param id The potion id
-	 * @param amplifier The potion amplifier value (usually 5)
-	 * 
-	 * @since 1.1
-	 */
-	public static void addPotionAmplifiers(int id, String amplifier){
-		potionAmplifiers.put(Integer.valueOf(id), amplifier);
 	}
 
 	/**
@@ -763,19 +696,5 @@ public class AbyssalCraftAPI {
 		public static String evil_chicken = mobNames[40];
 		public static String demon_cow = mobNames[41];
 		public static String demon_chicken = mobNames[42];
-	}
-
-	/**
-	 * Contains all potion effects added in AbyssalCraft.
-	 * You can reference them from here, or use the ID directly
-	 * 
-	 * @author shinoow
-	 *
-	 */
-	public static class ACPotions {
-
-		public static Potion Coralium_plague = Potion.potionTypes[potionId1];
-		public static Potion Dread_plague = Potion.potionTypes[potionId2];
-		public static Potion Antimatter = Potion.potionTypes[potionId3];
 	}
 }

@@ -1,12 +1,12 @@
 package com.shinoow.acblocks.common.schematics;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /* Reflects information about cuboid stereometric state in the world. */
 /**
  * Copied from Ternsip's Placemod mod.<br>
- * Original file can be found at https://github.com/ternsip/Placemod-1.8/blob/master/src/main/java/com/ternsip/placemod/Posture.java
+ * Original file can be found at https://github.com/ternsip/Placemod-1.9/blob/master/src/main/java/com/ternsip/placemod/Posture.java
  *
  */
 class Posture {

@@ -7,10 +7,12 @@ import java.net.URL;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.apache.logging.log4j.Level;
 
-import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.ACPotions;
+import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
 import com.shinoow.abyssalcraft.api.block.ACBlocks;
 import com.shinoow.abyssalcraft.common.entity.EntityAbyssalZombie;
 import com.shinoow.abyssalcraft.common.entity.EntityChagarothFist;
@@ -88,7 +90,7 @@ import com.shinoow.acblocks.common.triggers.TriggerRandomStructure;
 import com.shinoow.acblocks.common.triggers.TriggerShoggothInfestation;
 import com.shinoow.acblocks.world.AbyssalBlockWorldGenerator;
 
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.1,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.8.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.1,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
@@ -123,7 +125,8 @@ public class AbyssalBlocks {
 
 		abyssalBlock = new BlockAbyssalBlock();
 
-		GameRegistry.registerBlock(abyssalBlock, "abyssalblock");
+		GameRegistry.register(abyssalBlock, new ResourceLocation(modid, "abyssalblock"));
+		GameRegistry.register(new ItemBlock(abyssalBlock), new ResourceLocation(modid, "abyssalblock"));
 		
 		if(shouldGenerate)
 			MinecraftForge.EVENT_BUS.register(new AbyssalBlockWorldGenerator());
@@ -146,35 +149,35 @@ public class AbyssalBlocks {
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerFreeRitualAltar(), 8);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerAntimatterExplosion(), 3);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomStructure(new StructureShoggothPit()), 3);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.DUNGEON_CHEST), 9);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.DUNGEON_CHEST), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.DUNGEON_CHEST), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.DUNGEON_CHEST), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.DUNGEON_CHEST), 5);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR), 9);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_CORRIDOR), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(ChestGenHooks.STRONGHOLD_CROSSING), 9);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_CROSSING), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_CROSSING), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR), 9);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.MINESHAFT_CORRIDOR), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.BONUS_CHEST), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.BONUS_CHEST), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.BONUS_CHEST), 5);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.STRONGHOLD_LIBRARY), 5);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_DESERT_CHEST), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST), 8);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.PYRAMID_JUNGLE_CHEST), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH), 7);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH), 6);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(ChestGenHooks.VILLAGE_BLACKSMITH), 5);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SIMPLE_DUNGEON), 9);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SIMPLE_DUNGEON), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SIMPLE_DUNGEON), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SIMPLE_DUNGEON), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SIMPLE_DUNGEON), 5);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CORRIDOR), 9);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CORRIDOR), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CORRIDOR), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CROSSING), 9);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CROSSING), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_CROSSING), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerMultipleRandomChestLoot(LootTableList.CHESTS_ABANDONED_MINESHAFT), 9);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_ABANDONED_MINESHAFT), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_ABANDONED_MINESHAFT), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SPAWN_BONUS_CHEST), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SPAWN_BONUS_CHEST), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_SPAWN_BONUS_CHEST), 5);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_LIBRARY), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_LIBRARY), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_STRONGHOLD_LIBRARY), 5);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_DESERT_PYRAMID), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_DESERT_PYRAMID), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_DESERT_PYRAMID), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_JUNGLE_TEMPLE), 8);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_JUNGLE_TEMPLE), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_JUNGLE_TEMPLE), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_VILLAGE_BLACKSMITH), 7);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_VILLAGE_BLACKSMITH), 6);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomChestLoot(LootTableList.CHESTS_VILLAGE_BLACKSMITH), 5);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomLootPoolLoot(StructureAbyStrongholdPieces.ChestCorridor.strongholdChestContents), 9);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomLootPoolLoot(StructureAbyStrongholdPieces.RoomCrossing.strongholdRoomCrossingChestContents), 9);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerRandomLootPoolLoot(StructureDreadlandsMinePieces.mineshaftChestContents), 9);
@@ -234,8 +237,8 @@ public class AbyssalBlocks {
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerSwarm(EntityOmotholGhoul.class, EntityLesserShoggoth.class, EntityShadowBeast.class), 1);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerSwarm(EntitySkeletonGoliath.class, EntityLesserShoggoth.class, EntityShadowBeast.class), 1);
 		AbyssalBlocksAPI.registerBlockTrigger(new TriggerSwarm(EntityDreadguard.class, EntityGreaterDreadSpawn.class, EntityLesserShoggoth.class), 1);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerPotionEffect(ACPotions.Coralium_plague), 1);
-		AbyssalBlocksAPI.registerBlockTrigger(new TriggerPotionEffect(ACPotions.Dread_plague), 1);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerPotionEffect(AbyssalCraftAPI.coralium_plague), 1);
+		AbyssalBlocksAPI.registerBlockTrigger(new TriggerPotionEffect(AbyssalCraftAPI.dread_plague), 1);
 	}
 
 	@EventHandler
@@ -257,7 +260,7 @@ public class AbyssalBlocks {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-		if(eventArgs.modID.equals("acblocks"))
+		if(eventArgs.getModID().equals("acblocks"))
 			syncConfig();
 	}
 

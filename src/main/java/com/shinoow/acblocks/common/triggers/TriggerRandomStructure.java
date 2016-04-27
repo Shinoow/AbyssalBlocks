@@ -4,13 +4,17 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import com.shinoow.abyssalcraft.api.block.ACBlocks;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
-import com.shinoow.acblocks.common.structures.*;
+import com.shinoow.acblocks.common.structures.ACHouse1;
+import com.shinoow.acblocks.common.structures.ACHouse2;
+import com.shinoow.acblocks.common.structures.ACPlatform1;
+import com.shinoow.acblocks.common.structures.ACPlatform2;
+import com.shinoow.acblocks.common.structures.ACScion1;
+import com.shinoow.acblocks.common.structures.ACScion2;
 
 public class TriggerRandomStructure extends BlockTrigger {
 

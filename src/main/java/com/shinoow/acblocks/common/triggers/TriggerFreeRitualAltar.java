@@ -3,20 +3,18 @@ package com.shinoow.acblocks.common.triggers;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.shinoow.abyssalcraft.api.block.ACBlocks;
 import com.shinoow.abyssalcraft.api.ritual.RitualRegistry;
-import com.shinoow.abyssalcraft.common.util.SpecialTextUtil;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
 
 public class TriggerFreeRitualAltar extends BlockTrigger {
 
 	@Override
 	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
-		if(RitualRegistry.instance().canPerformAction(world.provider.getDimensionId(), 4)){
+		if(RitualRegistry.instance().canPerformAction(world.provider.getDimension(), 4)){
 			int x = 0;
 			int y = 0;
 			int z = 0;

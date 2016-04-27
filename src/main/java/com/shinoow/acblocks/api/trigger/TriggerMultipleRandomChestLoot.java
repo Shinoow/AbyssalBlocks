@@ -3,7 +3,8 @@ package com.shinoow.acblocks.api.trigger;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TriggerMultipleRandomChestLoot extends TriggerRandomChestLoot {
@@ -12,7 +13,7 @@ public class TriggerMultipleRandomChestLoot extends TriggerRandomChestLoot {
 	 * A Multiple Random Chest Loot Trigger
 	 * @param lootTable Name of a Loot Table registered in ChestGenHooks
 	 */
-	public TriggerMultipleRandomChestLoot(String lootTable) {
+	public TriggerMultipleRandomChestLoot(ResourceLocation lootTable) {
 		super(lootTable);
 	}
 	
