@@ -1,0 +1,6 @@
+#Configuration
+acb_general=General
+acb_general.tooltip=General configuration
+
+#Blocks
+tile.abyssalblock.name=AbyssalBlock

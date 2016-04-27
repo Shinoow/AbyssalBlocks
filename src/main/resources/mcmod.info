@@ -1,0 +1,25 @@
+{
+  	"modListVersion": 2,
+  	"modList": [
+  			{
+  				"modid": "acblocks",
+  				"name": "AbyssalBlocks",
+  				"description": "Lucky Block spin-off filled with AbyssalCraft rewards/punishments",
+  				"mcversion": "${mcversion}",
+  				"version": "${version}",
+  				"authorList": [
+  						"shinoow"
+  				],
+  				"credits": "shinoow (coding), Ternsip (schematic loader)",
+  				"dependants": [  ],
+				"dependencies": [ "abyssalcraft" ],
+				"parent": "",
+				"requiredMods": [  ],
+				"logoFile": "assets/acblocks/textures/logo.png",
+				"screenshots": [  ],
+				"updateUrl": "",
+  				"url": "",
+ 				"useDependencyInformation": true
+			}
+	]
+}
