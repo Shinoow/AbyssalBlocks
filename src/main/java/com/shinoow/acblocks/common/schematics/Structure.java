@@ -1,5 +1,17 @@
 package com.shinoow.acblocks.common.schematics;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityVillager;
@@ -10,7 +22,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -18,14 +29,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.*;
 
 /* Holds schematic-extended information and can load/spawn/calibrate it */
 /**
@@ -137,7 +140,7 @@ public class Structure {
         int width = posture.getWidth();
         int height = posture.getHeight();
         int length = posture.getLength();
-        int bedrock = Block.getIdFromBlock(Blocks.bedrock);
+        int bedrock = Block.getIdFromBlock(Blocks.BEDROCK);
         int startChunkX = posture.getStartChunkX();
         int startChunkZ = posture.getStartChunkZ();
         int sizeChunkX = posture.getEndChunkX() - startChunkX + 1;
@@ -148,7 +151,7 @@ public class Structure {
                 Chunk chunk = world.getChunkFromChunkCoords(cx + startChunkX, cz + startChunkZ);
                 for (int sy = 0; sy < 256; sy += 16) {
                     IBlockState state = chunk.getBlockState(new BlockPos(0, sy, 0));
-                    chunk.setBlockState(new BlockPos(0, sy, 0), Blocks.log.getDefaultState());
+                    chunk.setBlockState(new BlockPos(0, sy, 0), Blocks.LOG.getDefaultState());
                     chunk.setBlockState(new BlockPos(0, sy, 0), state);
                 }
                 ExtendedBlockStorage[] stack = chunk.getBlockStorageArray();
@@ -186,7 +189,7 @@ public class Structure {
                     if (blockTile != null && blockTile instanceof TileEntityChest) {
                         TileEntityChest chest = (TileEntityChest) blockTile;
                         int id = Math.abs(random.nextInt() % lootTables.size());
-                        chest.setLoot(lootTables.get(id), random.nextLong());
+                        chest.setLootTable(lootTables.get(id), random.nextLong());
                     }
                 }
             }
@@ -205,7 +208,7 @@ public class Structure {
                     continue;
                 }
                 EntityVillager villager = new EntityVillager(world, Math.abs(random.nextInt()) % 5);
-                float facing = MathHelper.wrapAngleTo180_float(random.nextFloat() * 360.0F);
+                float facing = MathHelper.wrapDegrees(random.nextFloat() * 360.0F);
                 villager.setLocationAndAngles(xPos + 0.5, yPos + 0.1, zPos + 0.5, facing, 0.0F);
                 world.spawnEntityInWorld(villager);
                 villager.playLivingSound();
@@ -381,11 +384,11 @@ public class Structure {
         int length = flags.getShort("Length");
         Posture posture = new Posture(0, 0, 0, 0, 0, 0, false, false, false, width, height, length);
         HashSet<Integer> skinBlocks = new HashSet<Integer>();
-        skinBlocks.add(Block.getIdFromBlock(Blocks.air));
+        skinBlocks.add(Block.getIdFromBlock(Blocks.AIR));
         if (    flags.getString("Method").equalsIgnoreCase("Water") ||
                 flags.getString("Method").equalsIgnoreCase("Underwater")) {
-            skinBlocks.add(Block.getIdFromBlock(Blocks.water));
-            skinBlocks.add(Block.getIdFromBlock(Blocks.flowing_water));
+            skinBlocks.add(Block.getIdFromBlock(Blocks.WATER));
+            skinBlocks.add(Block.getIdFromBlock(Blocks.FLOWING_WATER));
         }
         Queue<Integer> indexQueue = new LinkedList<Integer>();
         byte[] clipped = new byte[width * height * length];

@@ -26,19 +26,19 @@ public class TriggerDarkRealmBanish extends BlockTrigger {
 					if(player instanceof EntityPlayerMP){
 						WorldServer worldServer = (WorldServer) player.worldObj;
 						EntityPlayerMP mp = (EntityPlayerMP) player;
-						mp.addPotionEffect(new PotionEffect(MobEffects.resistance, 80, 255));
-						mp.addPotionEffect(new PotionEffect(MobEffects.blindness, 20));
+						mp.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 80, 255));
+						mp.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 20));
 						mp.mcServer.getPlayerList().transferPlayerToDimension(mp, AbyssalCraft.configDimId4, new TeleporterDarkRealm(worldServer));
 						player.addStat(AbyssalCraft.enterDarkRealm, 1);
 					}
 			} else {
-				player.addPotionEffect(new PotionEffect(MobEffects.blindness, 30));
-				player.addPotionEffect(new PotionEffect(MobEffects.nightVision, 30));
+				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 30));
+				player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
 				SpecialTextUtil.JzaharGroup(world, String.format("You were lucky this time %s, otherwise you'd end up in the depths.", player.getName()));
 			}
 		} else {
-			player.addPotionEffect(new PotionEffect(MobEffects.blindness, 30));
-			player.addPotionEffect(new PotionEffect(MobEffects.nightVision, 30));
+			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 30));
+			player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
 		}
 	}
 }

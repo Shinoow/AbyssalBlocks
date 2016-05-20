@@ -47,10 +47,10 @@ public class Directions {
         if (block instanceof BlockStairs) {
             return BlockType.STAIR;
         }
-        if (block instanceof BlockChest || block instanceof BlockEnderChest || block instanceof BlockFurnace || block instanceof BlockLadder || Block.getIdFromBlock(block) == Block.getIdFromBlock(Blocks.wall_sign)) {
+        if (block instanceof BlockChest || block instanceof BlockEnderChest || block instanceof BlockFurnace || block instanceof BlockLadder || Block.getIdFromBlock(block) == Block.getIdFromBlock(Blocks.WALL_SIGN)) {
             return BlockType.CHEST;
         }
-        if (Block.getIdFromBlock(block) == Block.getIdFromBlock(Blocks.standing_sign)) {
+        if (Block.getIdFromBlock(block) == Block.getIdFromBlock(Blocks.STANDING_SIGN)) {
             return BlockType.SIGNPOST;
         }
         if (block instanceof BlockDoor) {

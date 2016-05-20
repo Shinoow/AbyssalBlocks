@@ -60,9 +60,8 @@ public class AbyssalBlocksAPI {
 	/**
 	 * Generates a random Block Trigger
 	 * @param world Current World
-	 * @param x X-Coordinate
-	 * @param y Y-Coordinate
-	 * @param z Z-Coordinate
+	 * @param pos Current BlockPos
+	 * @param player Player breaking the block
 	 */
 	public static void generateBlockTrigger(World world, BlockPos pos, EntityPlayer player) {
 		rand.setSeed((long) (((world.rand.nextLong() * (world.rand.nextInt(15)+1))/(10* world.rand.nextInt(3)+1) * Calendar.getInstance(TimeZone.getTimeZone(TimeZone.getAvailableIDs()[world.rand.nextInt(TimeZone.getAvailableIDs().length)])).getTimeInMillis())/Math.PI));

@@ -28,7 +28,7 @@ public class AbyssalBlockWorldGenerator {
 
 			BlockPos pos = new BlockPos(xPos, yPos - 1, zPos);
 			
-			if(world.getBlockState(pos).getBlock().equals(Blocks.bedrock))
+			if(world.getBlockState(pos).getBlock().equals(Blocks.BEDROCK))
 			{
 				for(int y = 0; y < yPos; y++)
 				{

@@ -16,10 +16,10 @@ import com.shinoow.acblocks.api.AbyssalBlocksAPI;
 public class BlockAbyssalBlock extends Block {
 
 	public BlockAbyssalBlock() {
-		super(Material.grass);
+		super(Material.GRASS);
 		setHardness(1.0F);
 		setResistance(0);
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 		setUnlocalizedName("abyssalblock");
 	}
 
