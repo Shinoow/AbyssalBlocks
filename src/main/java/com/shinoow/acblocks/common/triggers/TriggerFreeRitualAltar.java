@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 import com.shinoow.abyssalcraft.api.block.ACBlocks;
 import com.shinoow.abyssalcraft.api.ritual.RitualRegistry;
-import com.shinoow.abyssalcraft.common.util.SpecialTextUtil;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
 
 public class TriggerFreeRitualAltar extends BlockTrigger {
@@ -20,7 +19,8 @@ public class TriggerFreeRitualAltar extends BlockTrigger {
 			int x = 0;
 			int y = 0;
 			int z = 0;
-			world.setBlockState(pos.add(x -3, y, z), ACBlocks.ritual_altar.getStateFromMeta(1), 2);
+			world.setBlockState(pos, ACBlocks.ritual_altar.getStateFromMeta(1), 2);
+			world.setBlockState(pos.add(x -3, y, z), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x, y, z -3), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x + 3, y, z), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x, y, z + 3), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);

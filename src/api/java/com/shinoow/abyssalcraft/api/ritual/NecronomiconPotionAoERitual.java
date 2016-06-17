@@ -11,7 +11,6 @@
  ******************************************************************************/
 package com.shinoow.abyssalcraft.api.ritual;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -24,7 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.ACPotions;
+import com.shinoow.abyssalcraft.api.entity.EntityUtil;
 
 /**
  * A Necronomicon Area-of-Effect Ritual
@@ -42,12 +41,12 @@ public class NecronomiconPotionAoERitual extends NecronomiconRitual {
 	 * @param bookType Necronomicon book type required
 	 * @param dimension Dimension where the ritual can be peformed
 	 * @param requiredEnergy Amount of Potential Energy required to perform
-	 * @param remnantHelp If Remnants can aid you when performing the ritual
+	 * @param requiresSacrifice If the ritual requires a living sacrifice
 	 * @param potions Either a Potion effect or a Potion ID (will last for 20 seconds)
 	 * @param offerings Components used to perform the ritual, are consumed afterwards
 	 */
-	public NecronomiconPotionAoERitual(String unlocalizedName, int bookType, int dimension, float requiredEnergy, boolean remnantHelp, Object potion, Object...offerings) {
-		super(unlocalizedName, bookType, dimension, requiredEnergy, remnantHelp, offerings);
+	public NecronomiconPotionAoERitual(String unlocalizedName, int bookType, int dimension, float requiredEnergy, boolean requiresSacrifice, Object potion, Object...offerings) {
+		super(unlocalizedName, bookType, dimension, requiredEnergy, requiresSacrifice, offerings);
 		this.potion = potion;
 	}
 
@@ -88,21 +87,6 @@ public class NecronomiconPotionAoERitual extends NecronomiconRitual {
 		return null;
 	}
 
-	private boolean isEntityImmune(Potion potion, Entity entity){
-		boolean result = false;
-		try {
-			Class utilClass = Class.forName("com.shinoow.abyssalcraft.common.util.EntityUtil");
-
-			result = potion == ACPotions.Coralium_plague && (Boolean)utilClass.getDeclaredMethod("isEntityCoralium", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity) ||
-					potion == ACPotions.Dread_plague && (Boolean)utilClass.getDeclaredMethod("isEntityDread", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity) ||
-					potion == ACPotions.Antimatter && (Boolean)utilClass.getDeclaredMethod("isEntityAnti", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity);
-
-		} catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
 	@Override
 	public boolean canCompleteRitual(World world, BlockPos pos, EntityPlayer player) {
 
@@ -116,8 +100,8 @@ public class NecronomiconPotionAoERitual extends NecronomiconRitual {
 
 		if(!entities.isEmpty())
 			for(Entity entity : entities)
-				if(entity instanceof EntityLiving && !entity.isDead)
-					if(!isEntityImmune(getPotionEffect(), entity))
+				if(entity instanceof EntityLivingBase && !entity.isDead)
+					if(!EntityUtil.isEntityImmune((EntityLivingBase) entity, getPotionEffect()))
 						((EntityLiving)entity).addPotionEffect(new PotionEffect(getPotionEffect().id, 400));
 	}
 

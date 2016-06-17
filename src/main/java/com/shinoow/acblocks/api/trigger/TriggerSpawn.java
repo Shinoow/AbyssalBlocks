@@ -32,7 +32,7 @@ public class TriggerSpawn extends BlockTrigger {
 	@Override
 	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(!world.isRemote)
-			for(int i = 0; i < num+1; i++){
+			for(int i = 0; i < num; i++){
 				EntityLivingBase entityliving = null;
 				try {
 					entityliving = entity.getConstructor(World.class).newInstance(world);

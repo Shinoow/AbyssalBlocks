@@ -13,7 +13,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.ACPotions;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
 
 public class TriggerPotionEffect extends BlockTrigger {
@@ -27,11 +26,9 @@ public class TriggerPotionEffect extends BlockTrigger {
 	private boolean isEntityImmune(Potion potion, Entity entity){
 		boolean result = false;
 		try {
-			Class utilClass = Class.forName("com.shinoow.abyssalcraft.common.util.EntityUtil");
+			Class utilClass = Class.forName("com.shinoow.abyssalcraft.api.entity.EntityUtil");
 
-			result = potion == ACPotions.Coralium_plague && (Boolean)utilClass.getDeclaredMethod("isEntityCoralium", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity) ||
-					potion == ACPotions.Dread_plague && (Boolean)utilClass.getDeclaredMethod("isEntityDread", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity) ||
-					potion == ACPotions.Antimatter && (Boolean)utilClass.getDeclaredMethod("isEntityAnti", EntityLivingBase.class).invoke(null, (EntityLivingBase)entity);
+			result = (Boolean)utilClass.getDeclaredMethod("isEntityImmune", EntityLivingBase.class, Potion.class).invoke(null, (EntityLivingBase)entity, potion);
 
 		} catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
