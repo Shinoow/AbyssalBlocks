@@ -34,8 +34,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.shinoow.abyssalcraft.api.block.ACBlocks;
-import com.shinoow.abyssalcraft.api.integration.IACPlugin;
-import com.shinoow.abyssalcraft.api.integration.ACPlugin;
+import com.shinoow.abyssalcraft.api.entity.EntityUtil;
 import com.shinoow.abyssalcraft.api.internal.DummyNecroDataHandler;
 import com.shinoow.abyssalcraft.api.internal.IInternalNecroDataHandler;
 import com.shinoow.abyssalcraft.api.item.ACItems;
@@ -61,7 +60,7 @@ public class AbyssalCraftAPI {
 	/**
 	 * String used to specify the API version in the "package-info.java" classes
 	 */
-	public static final String API_VERSION = "1.6.5";
+	public static final String API_VERSION = "1.7.5";
 
 	public static Enchantment coralium_enchantment, dread_enchantment, light_pierce, iron_wall;
 
@@ -74,13 +73,9 @@ public class AbyssalCraftAPI {
 	public static DamageSource dread = new DamageSource("dread").setDamageBypassesArmor().setMagicDamage();
 	public static DamageSource antimatter = new DamageSource("antimatter").setDamageBypassesArmor().setMagicDamage();
 
-	private static List<Class<? extends EntityLivingBase>> shoggothFood = Lists.newArrayList();
-
 	private static List<Block> shoggothBlockBlacklist = Lists.newArrayList();
 
 	private static List<ItemStack> crystals = Lists.newArrayList();
-
-	private static List<IACPlugin> integrations = Lists.newArrayList();
 
 	private static HashMap<NecroData, Integer> necroData = Maps.newHashMap();
 
@@ -443,7 +438,7 @@ public class AbyssalCraftAPI {
 	public static void addMaterialization(ItemStack[] input, ItemStack output){
 		for(ItemStack item : input)
 			if(!APIUtils.isCrystal(item)) throw new ClassCastException("All of the input items has to be Crystals!");
-		if(input.length > 0 || input == null)
+		if(input.length > 0 && input != null)
 			if(input.length <= 5)
 				MaterializerRecipes.instance().materialize(input, output);
 			else FMLLog.log("AbyssalCraftAPI", Level.ERROR, "This Materializer recipe has more than 5 inputs! (%d)", input.length);
@@ -521,9 +516,12 @@ public class AbyssalCraftAPI {
 	 * @param clazz The potential "food" for the Lesser Shoggoth
 	 * 
 	 * @since 1.2
+	 * 
+	 * @deprecated use {@link EntityUtil#addShoggothFood(Class)} instead
 	 */
+	@Deprecated
 	public static void addShoggothFood(Class<? extends EntityLivingBase> clazz){
-		shoggothFood.add(clazz);
+		EntityUtil.addShoggothFood(clazz);
 	}
 
 	/**
@@ -531,9 +529,12 @@ public class AbyssalCraftAPI {
 	 * @return An ArrayList containing Entity classes
 	 * 
 	 * @since 1.2
+	 * 
+	 * @deprecated use {@link EntityUtil#getShoggothFood()} instead
 	 */
+	@Deprecated
 	public static List<Class<? extends EntityLivingBase>> getShoggothFood(){
-		return shoggothFood;
+		return EntityUtil.getShoggothFood();
 	}
 
 	/**
@@ -577,34 +578,6 @@ public class AbyssalCraftAPI {
 	 */
 	public static List<ItemStack> getCrystals(){
 		return crystals;
-	}
-
-	/**
-	 * Method used to register AbyssalCraft integrations by other mods.
-	 * This can be useful if you want to have a weak dependency (you could do all the
-	 * integration stuff in a class that's only called when AC is loaded)
-	 * NOTE: Should be registered in either Pre-init or Init
-	 * @param plugin A class that implements the {@link IACPlugin} interface
-	 * 
-	 * @deprecated Use the {@literal @}{@link ACPlugin} annotation instead
-	 * 
-	 * @since 1.3
-	 */
-	@Deprecated
-	public static void registerACIntegration(IACPlugin plugin){
-		FMLLog.log("AbyssalCraftAPI", Level.INFO, "Integration plugin for mod %s was registered using the old method, consider switching to @ACPlugin instead!", plugin.getModName());
-		integrations.add(plugin);
-	}
-
-	/**
-	 * Used by the IntegrationHandler to fetch a list of integrations made
-	 * by other mods
-	 * @return An ArrayList of IACPlugins
-	 * 
-	 * @since 1.3
-	 */
-	public static List<IACPlugin> getIntegrations(){
-		return integrations;
 	}
 
 	/**

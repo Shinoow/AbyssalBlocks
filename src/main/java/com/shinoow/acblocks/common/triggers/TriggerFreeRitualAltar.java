@@ -18,7 +18,8 @@ public class TriggerFreeRitualAltar extends BlockTrigger {
 			int x = 0;
 			int y = 0;
 			int z = 0;
-			world.setBlockState(pos.add(x -3, y, z), ACBlocks.ritual_altar.getStateFromMeta(1), 2);
+			world.setBlockState(pos, ACBlocks.ritual_altar.getStateFromMeta(1), 2);
+			world.setBlockState(pos.add(x -3, y, z), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x, y, z -3), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x + 3, y, z), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);
 			world.setBlockState(pos.add(x, y, z + 3), ACBlocks.ritual_pedestal.getStateFromMeta(1), 2);

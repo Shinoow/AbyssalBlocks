@@ -1171,7 +1171,7 @@ public class ACHouse2 extends WorldGenerator {
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 3), Blocks.air.getDefaultState(), 2);
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 4), Blocks.air.getDefaultState(), 2);
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 5), ACBlocks.darkstone_brick_stairs.getStateFromMeta(2), 2);
-		world.setBlockState(new BlockPos(i + 6, j + 11, k + 6), Blocks.emerald_block.getDefaultState(), 2);
+		world.setBlockState(new BlockPos(i + 6, j + 11, k + 6), ACBlocks.darkstone_brick.getDefaultState(), 2);
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 7), ACBlocks.darkstone_brick_stairs.getStateFromMeta(3), 2);
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 8), Blocks.air.getDefaultState(), 2);
 		world.setBlockState(new BlockPos(i + 6, j + 11, k + 9), Blocks.air.getDefaultState(), 2);
