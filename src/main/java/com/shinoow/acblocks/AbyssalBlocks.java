@@ -59,11 +59,11 @@ import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiSkeleton;
 import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiSpider;
 import com.shinoow.abyssalcraft.common.entity.anti.EntityAntiZombie;
 import com.shinoow.abyssalcraft.common.structures.StructureShoggothPit;
-import com.shinoow.abyssalcraft.common.util.ACLoot;
 import com.shinoow.abyssalcraft.common.world.gen.WorldGenAbyLake;
 import com.shinoow.abyssalcraft.common.world.gen.WorldGenAntimatterLake;
 import com.shinoow.abyssalcraft.common.world.gen.WorldGenDreadlandsStalagmite;
 import com.shinoow.abyssalcraft.common.world.gen.WorldGenShoggothMonolith;
+import com.shinoow.abyssalcraft.lib.ACLoot;
 import com.shinoow.acblocks.api.AbyssalBlocksAPI;
 import com.shinoow.acblocks.api.trigger.TriggerMultipleRandomChestLoot;
 import com.shinoow.acblocks.api.trigger.TriggerRandomChestLoot;
@@ -87,12 +87,12 @@ import com.shinoow.acblocks.common.triggers.TriggerRandomStructure;
 import com.shinoow.acblocks.common.triggers.TriggerShoggothInfestation;
 import com.shinoow.acblocks.world.AbyssalBlockWorldGenerator;
 
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.6,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.9.4]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.2,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.9.4]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
 	public static final String name = "AbyssalBlocks";
-	public static final String version = "1.0.0";
+	public static final String version = "1.1.0";
 
 	@Metadata(AbyssalBlocks.modid)
 	public static ModMetadata metadata;

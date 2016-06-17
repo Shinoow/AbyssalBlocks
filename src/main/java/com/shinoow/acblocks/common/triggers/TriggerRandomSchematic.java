@@ -13,6 +13,6 @@ public class TriggerRandomSchematic extends TriggerRandomStructure {
 	@Override
 	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
 		if(Decorator.structures.isEmpty()) super.trigger(world, rand, pos, player);
-			Decorator.place(world, pos.getX(), pos.getY(), pos.getZ(), rand.nextLong());
+		else Decorator.place(world, pos.getX(), pos.getY(), pos.getZ(), rand.nextLong());
 	}
 }
