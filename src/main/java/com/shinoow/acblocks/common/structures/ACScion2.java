@@ -126,7 +126,7 @@ public class ACScion2 extends WorldGenerator {
 		world.setBlock(i + 3, j + 1, k + 0, Blocks.air, 0, 2);
 		world.setBlock(i + 3, j + 1, k + 1, Blocks.air, 0, 2);
 		world.setBlock(i + 3, j + 1, k + 2, AbyssalCraft.Darkstone_brick, 0, 2);
-		world.setBlock(i + 3, j + 1, k + 3, Blocks.emerald_block, 0, 2);
+		world.setBlock(i + 3, j + 1, k + 3, AbyssalCraft.Darkstone_brick, 0, 2);
 		world.setBlock(i + 3, j + 1, k + 4, AbyssalCraft.Darkstone_brick, 0, 2);
 		world.setBlock(i + 3, j + 1, k + 5, Blocks.air, 0, 2);
 		world.setBlock(i + 3, j + 1, k + 6, Blocks.air, 0, 2);

@@ -51,12 +51,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.1,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.1.2,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
 	public static final String name = "AbyssalBlocks";
-	public static final String version = "1.0.0";
+	public static final String version = "1.1.0";
 
 	@Metadata(AbyssalBlocks.modid)
 	public static ModMetadata metadata;
