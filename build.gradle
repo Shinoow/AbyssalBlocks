@@ -62,8 +62,8 @@ minecraft {
 }
 
 dependencies {
-	deobfCompile "mezz.jei:jei_1.9:3.2.8.182"
-	deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.9-1.9.2:dev"
+	deobfCompile "mezz.jei:jei_1.9:3.3.3.197"
+	deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.9-1.9.3-pre-1:dev"
 }
 
 version = "${props.mc_version}-${props.acb_version}"

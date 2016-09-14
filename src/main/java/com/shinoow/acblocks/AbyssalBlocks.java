@@ -87,12 +87,12 @@ import com.shinoow.acblocks.common.triggers.TriggerRandomStructure;
 import com.shinoow.acblocks.common.triggers.TriggerShoggothInfestation;
 import com.shinoow.acblocks.world.AbyssalBlockWorldGenerator;
 
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.2,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.3,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
 	public static final String name = "AbyssalBlocks";
-	public static final String version = "1.1.0";
+	public static final String version = "1.2.0";
 
 	@Metadata(AbyssalBlocks.modid)
 	public static ModMetadata metadata;
