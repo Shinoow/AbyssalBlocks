@@ -14,6 +14,7 @@ public class TriggerDisruption extends BlockTrigger {
 
 	@Override
 	public void trigger(World world, Random rand, BlockPos pos, EntityPlayer player) {
-		DisruptionHandler.instance().generateDisruption(null, world, pos, world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(32, 32, 32)));
+		if(!world.isRemote)
+			DisruptionHandler.instance().generateDisruption(null, world, pos, world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(32, 32, 32)));
 	}
 }

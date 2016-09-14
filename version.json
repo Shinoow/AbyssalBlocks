@@ -1,22 +1,25 @@
 {
   "homepage": "http://minecraft.curseforge.com/projects/abyssalblocks",
   "promos": {
-    "1.9.4-latest": "1.1.0",
-    "1.9.4-recommended": "1.1.0",
-    "1.9-latest": "1.1.0",
-    "1.9-recommended": "1.1.0",
-    "1.8.9-latest": "1.1.0",
-    "1.8.9-recommended": "1.1.0"
+    "1.9.4-latest": "1.2.0",
+    "1.9.4-recommended": "1.2.0",
+    "1.9-latest": "1.2.0",
+    "1.9-recommended": "1.2.0",
+    "1.8.9-latest": "1.2.0",
+    "1.8.9-recommended": "1.2.0"
   },
   "1.9.4": {
+	"1.2.0": "- Triggers are now synced between the client and server (so the same trigger fires at both sides)\n- Bump to AbyssalCraft 1.9.3-pre-1",
 	"1.1.0": "- Bump to AbyssalCraft 1.9.2\n- The mob spawning trigger should no longer spawn a extra Entity\n- The schematic trigger should no longer crash if no schematics are present\n- The free ritual altar trigger should place the Ritual Altar at the correct coordinates",
 	"1.0.0": "- Ported to Minecraft 1.9.4"
   },
   "1.9": {
+	"1.2.0": "- Triggers are now synced between the client and server (so the same trigger fires at both sides)\n- Bump to AbyssalCraft 1.9.3-pre-1",
 	"1.1.0": "- Bump to AbyssalCraft 1.9.2\n- The mob spawning trigger should no longer spawn a extra Entity\n- The schematic trigger should no longer crash if no schematics are present\n- The free ritual altar trigger should place the Ritual Altar at the correct coordinates",
 	"1.0.0": "- Initial release"
   },
   "1.8.9": {
+	"1.2.0": "- Triggers are now synced between the client and server (so the same trigger fires at both sides)\n- Bump to AbyssalCraft 1.9.3-pre-1",
 	"1.1.0": "- Bump to AbyssalCraft 1.9.2\n- The mob spawning trigger should no longer spawn a extra Entity\n- The schematic trigger should no longer crash if no schematics are present\n- The free ritual altar trigger should place the Ritual Altar at the correct coordinates",
 	"1.0.0": "- Initial release"
   }
