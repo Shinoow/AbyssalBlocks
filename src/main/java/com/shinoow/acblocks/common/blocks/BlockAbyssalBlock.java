@@ -2,18 +2,19 @@ package com.shinoow.acblocks.common.blocks;
 
 import java.util.Random;
 
-import com.shinoow.abyssalcraft.api.energy.disruption.DisruptionHandler;
-import com.shinoow.acblocks.api.AbyssalBlocksAPI;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+
+import com.shinoow.acblocks.api.AbyssalBlocksAPI;
+import com.shinoow.acblocks.api.trigger.BlockTrigger;
+import com.shinoow.acblocks.common.network.PacketDispatcher;
+import com.shinoow.acblocks.common.network.client.MessageBlockTrigger;
 
 public class BlockAbyssalBlock extends Block {
 
@@ -29,7 +30,7 @@ public class BlockAbyssalBlock extends Block {
 	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
 		world.setBlockToAir(pos);
-		AbyssalBlocksAPI.generateBlockTrigger(world, pos, player);
+		trigger(world, pos, player);
 		return true;
     }
 
@@ -44,4 +45,13 @@ public class BlockAbyssalBlock extends Block {
     {
         return Item.getItemById(0);
     }
+
+	public void trigger(World world, BlockPos pos, EntityPlayer player){
+		AbyssalBlocksAPI.setSeed(world.rand);
+		if(!world.isRemote){
+			BlockTrigger trigger = AbyssalBlocksAPI.generateBlockTrigger();
+			trigger.trigger(world, AbyssalBlocksAPI.getRNG(), pos, player);
+			PacketDispatcher.sendToDimension(new MessageBlockTrigger(trigger, pos), world.provider.getDimensionId());
+		}
+	}
 }

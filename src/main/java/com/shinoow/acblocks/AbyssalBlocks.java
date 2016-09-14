@@ -70,6 +70,7 @@ import com.shinoow.acblocks.api.trigger.TriggerRandomLootPoolLoot;
 import com.shinoow.acblocks.api.trigger.TriggerSpawn;
 import com.shinoow.acblocks.api.trigger.TriggerSwarm;
 import com.shinoow.acblocks.common.blocks.BlockAbyssalBlock;
+import com.shinoow.acblocks.common.network.PacketDispatcher;
 import com.shinoow.acblocks.common.schematics.Decorator;
 import com.shinoow.acblocks.common.structures.AbyPillar;
 import com.shinoow.acblocks.common.structures.AbyRuin;
@@ -87,12 +88,12 @@ import com.shinoow.acblocks.common.triggers.TriggerRandomStructure;
 import com.shinoow.acblocks.common.triggers.TriggerShoggothInfestation;
 import com.shinoow.acblocks.world.AbyssalBlockWorldGenerator;
 
-@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.2,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.8.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
+@Mod(modid = AbyssalBlocks.modid, name = AbyssalBlocks.name, version = AbyssalBlocks.version, dependencies = "required-after:Forge@[forgeversion,);required-after:abyssalcraft@[1.9.3,]", useMetadata = false, guiFactory = "com.shinoow.acblocks.client.config.ACBGuiFactory", acceptedMinecraftVersions = "[1.8.9]", updateJSON = "https://raw.githubusercontent.com/Shinoow/AbyssalBlocks/master/version.json")
 public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
 	public static final String name = "AbyssalBlocks";
-	public static final String version = "1.1.0";
+	public static final String version = "1.2.0";
 
 	@Metadata(AbyssalBlocks.modid)
 	public static ModMetadata metadata;
@@ -126,6 +127,7 @@ public class AbyssalBlocks {
 		
 		if(shouldGenerate)
 			MinecraftForge.EVENT_BUS.register(new AbyssalBlockWorldGenerator());
+		PacketDispatcher.registerPackets();
 	}
 
 	@EventHandler
@@ -280,7 +282,7 @@ public class AbyssalBlocks {
 
 		} catch (IOException e) {
 			FMLLog.log("AbyssalBlocks", Level.ERROR, "Failed to fetch supporter list, using local version!");
-			names = "Enfalas, Saice Shoop";
+			names = "Enfalas, Saice Shoop, Minecreatr";
 		}
 
 		return names;
