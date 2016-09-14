@@ -1,3 +1,1 @@
-- Bump to AbyssalCraft 1.9.1.2
-- The mob spawning trigger should no longer spawn a extra Entity
-- The schematic trigger should no longer crash if no schematics are present
+- Triggers are now synced between the client and server (so the same trigger fires at both sides)

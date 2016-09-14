@@ -32,6 +32,7 @@ import com.shinoow.acblocks.api.trigger.TriggerRandomLootPoolLoot;
 import com.shinoow.acblocks.api.trigger.TriggerSpawn;
 import com.shinoow.acblocks.api.trigger.TriggerSwarm;
 import com.shinoow.acblocks.common.blocks.BlockAbyssalBlock;
+import com.shinoow.acblocks.common.network.PacketDispatcher;
 import com.shinoow.acblocks.common.schematics.Decorator;
 import com.shinoow.acblocks.common.structures.AbyPillar;
 import com.shinoow.acblocks.common.structures.AbyRuin;
@@ -56,7 +57,7 @@ public class AbyssalBlocks {
 
 	public static final String modid = "acblocks";
 	public static final String name = "AbyssalBlocks";
-	public static final String version = "1.1.0";
+	public static final String version = "1.2.0";
 
 	@Metadata(AbyssalBlocks.modid)
 	public static ModMetadata metadata;
@@ -90,6 +91,7 @@ public class AbyssalBlocks {
 		
 		if(shouldGenerate)
 			MinecraftForge.EVENT_BUS.register(new AbyssalBlockWorldGenerator());
+		PacketDispatcher.registerPackets();
 	}
 
 	@EventHandler
@@ -241,7 +243,7 @@ public class AbyssalBlocks {
 
 		} catch (IOException e) {
 			FMLLog.log("AbyssalBlocks", Level.ERROR, "Failed to fetch supporter list, using local version!");
-			names = "Enfalas, Saice Shoop";
+			names = "Enfalas, Saice Shoop, Minecreatr";
 		}
 
 		return names;

@@ -1,50 +1,32 @@
 package com.shinoow.acblocks.api;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TimeZone;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
+import java.util.*;
 
 import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.shinoow.acblocks.api.trigger.BlockTrigger;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 
-
 public class AbyssalBlocksAPI {
 
-	private static List<BlockTrigger> triggers100 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers90 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers80 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers70 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers60 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers50 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers40 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers30 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers20 = Lists.newArrayList();
-	private static List<BlockTrigger> triggers10 = Lists.newArrayList();
 	private static Map<Integer, List<BlockTrigger>> triggerRegistry = new HashMap<Integer, List<BlockTrigger>>(){{
-		put(1, triggers10);
-		put(2, triggers20);
-		put(3, triggers30);
-		put(4, triggers40);
-		put(5, triggers50);
-		put(6, triggers60);
-		put(7, triggers70);
-		put(8, triggers80);
-		put(9, triggers90);
-		put(10, triggers100);
+		put(1, Lists.<BlockTrigger>newArrayList());
+		put(2, Lists.<BlockTrigger>newArrayList());
+		put(3, Lists.<BlockTrigger>newArrayList());
+		put(4, Lists.<BlockTrigger>newArrayList());
+		put(5, Lists.<BlockTrigger>newArrayList());
+		put(6, Lists.<BlockTrigger>newArrayList());
+		put(7, Lists.<BlockTrigger>newArrayList());
+		put(8, Lists.<BlockTrigger>newArrayList());
+		put(9, Lists.<BlockTrigger>newArrayList());
+		put(10, Lists.<BlockTrigger>newArrayList());
 	}};
 	static Random rand = new Random();
+
+	static int triggerNum;
 
 	/**
 	 * Registers a Block Trigger
@@ -53,23 +35,49 @@ public class AbyssalBlocksAPI {
 	 * should be in, where 10 is awesome and 1 is horrible)
 	 */
 	public static void registerBlockTrigger(BlockTrigger trigger, int num) {
-		if(num < 10 || num > 1)
-			triggerRegistry.get(num).add(trigger);
+		if(num < 11 && num > 0)
+			triggerRegistry.get(num).add(trigger.setName("trigger"+triggerNum++).setNum(num));
 		else FMLLog.log("AbyssalBlocks", Level.ERROR, "Mod %s tried to registed a trigger outside of the range!", Loader.instance().activeModContainer().getModId());
 	}
 
 	/**
-	 * Generates a random Block Trigger
-	 * @param world Current World
-	 * @param x X-Coordinate
-	 * @param y Y-Coordinate
-	 * @param z Z-Coordinate
+	 * Uses a second Random instance to set the seed of the internal one
+	 * @param random Random instance (use world RNG if possible
 	 */
-	public static void generateBlockTrigger(World world, int x, int y, int z, EntityPlayer player) {
-		rand.setSeed((long) (((world.rand.nextLong() * (world.rand.nextInt(15)+1))/(10* world.rand.nextInt(3)+1) * Calendar.getInstance(TimeZone.getTimeZone(TimeZone.getAvailableIDs()[world.rand.nextInt(TimeZone.getAvailableIDs().length)])).getTimeInMillis())/Math.PI));
+	public static void setSeed(Random random){
+		rand.setSeed((long) (((random.nextLong() * (random.nextInt(15)+1))/(10* random.nextInt(3)+1) * Calendar.getInstance(TimeZone.getTimeZone(TimeZone.getAvailableIDs()[random.nextInt(TimeZone.getAvailableIDs().length)])).getTimeInMillis())/Math.PI));
+	}
+
+	/**
+	 * Generates a random Block Trigger
+	 */
+	public static BlockTrigger generateBlockTrigger() {
 		int num = getNum(rand.nextInt(100));
 
-		triggerRegistry.get(num).get(rand.nextInt(triggerRegistry.get(num).size())).trigger(world, rand, x, y, z, player);
+		return triggerRegistry.get(num).get(rand.nextInt(triggerRegistry.get(num).size()));
+	}
+
+	/**
+	 * Utility method for fetching the random instance used for picking Block Triggers.
+	 */
+	public static Random getRNG(){
+		return rand;
+	}
+
+	/**
+	 * Fetches a Block Trigger based on it's internal name
+	 * @param name Block Trigger name
+	 * @param num Block Trigger category
+	 * @return A Block Trigger from the specified category, or null if none was found
+	 */
+	public static BlockTrigger getTriggerFromName(String name, int num){
+		if(num < 10 || num > 1){
+			for(BlockTrigger trigger : triggerRegistry.get(num)){
+				if(trigger.getName().equals(name))
+					return trigger;
+			}
+		}
+		return null;
 	}
 
 	private static int getNum(int dice){
