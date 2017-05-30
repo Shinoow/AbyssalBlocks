@@ -10,7 +10,7 @@ AbyssalBlocks is a Lucky Block spin-off where the rewards/punishments are based 
 
 Right now the project is licensed as "All Rights Reserved", but that might change in the future. However, I can't stop you from using small bits of code, and the schematic loader code is borrowed from another mod, so that code (with a large amount of modification) is to be viewd as MIT licensed.
 
-###Support Development
+### Support Development
 
 [![](https://s3.amazonaws.com/patreon_public_assets/kaGh5_patreon_name_and_message.png)](https://www.patreon.com/Shinoow)
 
